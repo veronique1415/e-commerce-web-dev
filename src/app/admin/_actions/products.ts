@@ -23,6 +23,7 @@ export async function addProducts(prevState: unknown, formData: FormData) {
    }
 
    const data = result.data
+   console.log(data)
 
    await fs.mkdir("products", {recursive: true})
    const filePath = `products/${crypto.randomUUID()}-${data.file.name}`
@@ -32,7 +33,8 @@ export async function addProducts(prevState: unknown, formData: FormData) {
    const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`
    await fs.writeFile(`public${imagePath}`, Buffer.from(await data.image.arrayBuffer()))
 
-   db.product.create({data: {
+   await db.product.create({data: {
+    isAvailableForPurchase: false, 
     name: data.name,
     description: data.description,
     priceInCents: data.priceInCents,
